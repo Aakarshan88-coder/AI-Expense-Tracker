@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from models.user import User
 from schemas.user import UserCreate
-from utils.security import hash_password,verify_password
+from utils.security import hash_password,verify_password,create_access_token
 
 def create_user(db: Session, user: UserCreate):
     new_user = User(
@@ -32,4 +32,11 @@ def login_user(db: Session, user):
     if not verify_password(user.password, existing_user.password):
         return {"message": "Incorrect password"}
 
-    return {"message": "Login Successful"}
+    access_token = create_access_token(
+    data={"sub": existing_user.email}
+)
+
+    return {
+    "access_token": access_token,
+    "token_type": "bearer"
+}
