@@ -75,3 +75,18 @@ export const updateExpense = async (id, expense) => {
     return response.data;
 
 };
+
+
+export const deleteExpense = async (id) => {
+
+    const response = await api.delete(
+
+        `/expenses/${id}`,
+
+        getHeaders()
+
+    );
+
+    return response.data;
+
+};

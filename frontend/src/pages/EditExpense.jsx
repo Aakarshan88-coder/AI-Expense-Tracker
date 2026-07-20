@@ -1,44 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import { addExpense } from "../services/expense";
+import {
+    getExpenseById,
+    updateExpense
+} from "../services/expense";
 
-import { useNavigate } from "react-router-dom";
+import {
+    useNavigate,
+    useParams
+} from "react-router-dom";
 
-function EditExpense(){
+function EditExpense() {
 
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
-    const [amount,setAmount]=useState("");
+    const { id } = useParams();
 
-    const [category,setCategory]=useState("");
+    const [amount, setAmount] = useState("");
+    const [category, setCategory] = useState("");
+    const [description, setDescription] = useState("");
+    const [date, setDate] = useState("");
 
-    const [description,setDescription]=useState("");
+    useEffect(() => {
 
-    const [date,setDate]=useState("");
+        loadExpense();
 
-    const handleSubmit=async(e)=>{
+    }, []);
+
+    const loadExpense = async () => {
+
+        const expense = await getExpenseById(id);
+
+        setAmount(expense.amount);
+        setCategory(expense.category);
+        setDescription(expense.description);
+        setDate(expense.date);
+
+    };
+
+    const handleSubmit = async (e) => {
 
         e.preventDefault();
 
-        await addExpense({
+        await updateExpense(id, {
 
-            amount:Number(amount),
-
+            amount: Number(amount),
             category,
-
             description,
-
             date
 
         });
 
-        alert("Expense Added Successfully");
+        alert("Expense Updated Successfully");
 
         navigate("/dashboard");
 
     };
 
-    return(
+    return (
 
         <div className="dashboard">
 
@@ -47,58 +66,41 @@ function EditExpense(){
             <form onSubmit={handleSubmit}>
 
                 <input
-
-                type="number"
-
-                placeholder="Amount"
-
-                value={amount}
-
-                onChange={(e)=>setAmount(e.target.value)}
-
+                    type="number"
+                    placeholder="Amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
                 />
 
-                <br/><br/>
+                <br /><br />
 
                 <input
-
-                placeholder="Category"
-
-                value={category}
-
-                onChange={(e)=>setCategory(e.target.value)}
-
+                    placeholder="Category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
                 />
 
-                <br/><br/>
+                <br /><br />
 
                 <input
-
-                placeholder="Description"
-
-                value={description}
-
-                onChange={(e)=>setDescription(e.target.value)}
-
+                    placeholder="Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                 />
 
-                <br/><br/>
+                <br /><br />
 
                 <input
-
-                type="date"
-
-                value={date}
-
-                onChange={(e)=>setDate(e.target.value)}
-
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
                 />
 
-                <br/><br/>
+                <br /><br />
 
-                <button>
+                <button type="submit">
 
-                 Update Expense
+                    Update Expense
 
                 </button>
 

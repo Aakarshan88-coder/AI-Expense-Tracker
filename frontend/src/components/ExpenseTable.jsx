@@ -1,6 +1,38 @@
 import { useNavigate } from "react-router-dom";
+import { deleteExpense } from "../services/expense";
+
 function ExpenseTable({ expenses }) {
-const navigate = useNavigate();
+
+    const navigate = useNavigate();
+
+    const handleDelete = async (id) => {
+
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this expense?"
+        );
+
+        if (!confirmDelete) {
+            return;
+        }
+
+        try {
+
+            await deleteExpense(id);
+
+            alert("Expense Deleted Successfully");
+
+            window.location.reload();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Failed to delete expense");
+
+        }
+
+    };
+
     return (
 
         <div style={{ marginTop: "40px" }}>
@@ -27,6 +59,7 @@ const navigate = useNavigate();
                         <th>Description</th>
 
                         <th>Date</th>
+
                         <th>Action</th>
 
                     </tr>
@@ -36,6 +69,7 @@ const navigate = useNavigate();
                 <tbody>
 
                     {
+
                         expenses.map((expense) => (
 
                             <tr key={expense.id}>
@@ -47,19 +81,33 @@ const navigate = useNavigate();
                                 <td>{expense.description}</td>
 
                                 <td>{expense.date}</td>
+
                                 <td>
 
-    <button
-        onClick={() => navigate(`/edit-expense/${expense.id}`)}
-    >
-        Edit
-    </button>
+                                    <button
+                                        onClick={() =>
+                                            navigate(`/edit-expense/${expense.id}`)
+                                        }
+                                    >
+                                        Edit
+                                    </button>
 
-</td>
+                                    {" "}
+
+                                    <button
+                                        onClick={() =>
+                                            handleDelete(expense.id)
+                                        }
+                                    >
+                                        Delete
+                                    </button>
+
+                                </td>
 
                             </tr>
 
                         ))
+
                     }
 
                 </tbody>
