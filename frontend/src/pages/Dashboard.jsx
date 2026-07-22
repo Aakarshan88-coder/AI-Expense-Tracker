@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import Navbar from "../components/Navbar";
+import SummaryCard from "../components/SummaryCard";
+import ExpensePieChart from "../components/ExpensePieChart";
+import MonthlyExpenseChart from "../components/MonthlyExpenseChart";
+import ExpenseTable from "../components/ExpenseTable";
 
 import { getDashboardSummary } from "../services/dashboard";
 import { getExpenses } from "../services/expense";
 
-import SummaryCard from "../components/SummaryCard";
-import ExpenseTable from "../components/ExpenseTable";
+import "./Dashboard.css";
 
 function Dashboard() {
+
+    const navigate = useNavigate();
 
     const [summary, setSummary] = useState(null);
     const [expenses, setExpenses] = useState([]);
@@ -58,41 +66,71 @@ function Dashboard() {
 
     return (
 
-        <div className="dashboard">
+        <>
 
-            <h1>AI Expense Tracker</h1>
-            <button
+            <Navbar />
 
-onClick={()=>window.location.href="/add-expense"}
+            <div className="dashboard">
 
->
+                <div className="dashboard-header">
 
-Add Expense
+                    <div className="dashboard-title">
 
-</button>
+                        <h1>👋 Welcome Back</h1>
 
-            <div className="cards">
+                        <p>
+                            Track and manage your expenses efficiently.
+                        </p>
 
-                <SummaryCard
-                    title="Total Expenses"
-                    value={summary.total_expenses}
-                />
+                    </div>
 
-                <SummaryCard
-                    title="Total Amount"
-                    value={`₹ ${summary.total_amount}`}
-                />
+                    <button
+                        className="add-btn"
+                        onClick={() => navigate("/add-expense")}
+                    >
+                        + Add Expense
+                    </button>
 
-                <SummaryCard
-                    title="Highest Expense"
-                    value={`₹ ${summary.highest_expense}`}
+                </div>
+
+                <div className="cards">
+
+                    <SummaryCard
+                        title="Total Expenses"
+                        value={summary.total_expenses}
+                    />
+
+                    <SummaryCard
+                        title="Total Amount"
+                        value={`₹ ${summary.total_amount}`}
+                    />
+
+                    <SummaryCard
+                        title="Highest Expense"
+                        value={`₹ ${summary.highest_expense}`}
+                    />
+
+                </div>
+
+                <div className="chart-grid">
+
+                    <ExpensePieChart
+                        expenses={expenses}
+                    />
+
+                    <MonthlyExpenseChart
+                        expenses={expenses}
+                    />
+
+                </div>
+
+                <ExpenseTable
+                    expenses={expenses}
                 />
 
             </div>
 
-            <ExpenseTable expenses={expenses} />
-
-        </div>
+        </>
 
     );
 

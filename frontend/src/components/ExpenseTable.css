@@ -1,0 +1,121 @@
+.table-container{
+
+    margin-top:40px;
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.table-container h2{
+
+    margin-bottom:20px;
+
+    color:#1e293b;
+
+    font-size:24px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+th{
+
+    padding:16px;
+
+    text-align:left;
+
+    font-size:15px;
+
+}
+
+td{
+
+    padding:16px;
+
+    color:#334155;
+
+}
+
+tbody tr{
+
+    border-bottom:1px solid #e2e8f0;
+
+    transition:.3s;
+
+}
+
+tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+.edit-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    margin-right:10px;
+
+    transition:.3s;
+
+}
+
+.edit-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+.delete-btn{
+
+    background:#ef4444;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.delete-btn:hover{
+
+    background:#dc2626;
+
+}

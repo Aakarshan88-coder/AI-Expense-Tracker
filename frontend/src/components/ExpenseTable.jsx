@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { deleteExpense } from "../services/expense";
+import "./ExpenseTable.css";
+
 
 function ExpenseTable({ expenses }) {
 
@@ -11,9 +13,7 @@ function ExpenseTable({ expenses }) {
             "Are you sure you want to delete this expense?"
         );
 
-        if (!confirmDelete) {
-            return;
-        }
+        if (!confirmDelete) return;
 
         try {
 
@@ -25,7 +25,7 @@ function ExpenseTable({ expenses }) {
 
         } catch (error) {
 
-            console.error(error);
+            console.log(error);
 
             alert("Failed to delete expense");
 
@@ -35,18 +35,11 @@ function ExpenseTable({ expenses }) {
 
     return (
 
-        <div style={{ marginTop: "40px" }}>
+        <div className="table-container">
 
             <h2>Recent Expenses</h2>
 
-            <table
-                border="1"
-                cellPadding="10"
-                style={{
-                    width: "100%",
-                    borderCollapse: "collapse"
-                }}
-            >
+            <table>
 
                 <thead>
 
@@ -68,47 +61,39 @@ function ExpenseTable({ expenses }) {
 
                 <tbody>
 
-                    {
+                    {expenses.map((expense) => (
 
-                        expenses.map((expense) => (
+                        <tr key={expense.id}>
 
-                            <tr key={expense.id}>
+                            <td>{expense.category}</td>
 
-                                <td>{expense.category}</td>
+                            <td>₹ {expense.amount}</td>
 
-                                <td>₹ {expense.amount}</td>
+                            <td>{expense.description}</td>
 
-                                <td>{expense.description}</td>
+                            <td>{expense.date}</td>
 
-                                <td>{expense.date}</td>
+                            <td>
 
-                                <td>
+                                <button
+                                    className="edit-btn"
+                                    onClick={() => navigate(`/edit-expense/${expense.id}`)}
+                                >
+                                    Edit
+                                </button>
 
-                                    <button
-                                        onClick={() =>
-                                            navigate(`/edit-expense/${expense.id}`)
-                                        }
-                                    >
-                                        Edit
-                                    </button>
+                                <button
+                                    className="delete-btn"
+                                    onClick={() => handleDelete(expense.id)}
+                                >
+                                    Delete
+                                </button>
 
-                                    {" "}
+                            </td>
 
-                                    <button
-                                        onClick={() =>
-                                            handleDelete(expense.id)
-                                        }
-                                    >
-                                        Delete
-                                    </button>
+                        </tr>
 
-                                </td>
-
-                            </tr>
-
-                        ))
-
-                    }
+                    ))}
 
                 </tbody>
 

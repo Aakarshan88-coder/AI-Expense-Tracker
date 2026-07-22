@@ -1,12 +1,22 @@
+import "./SummaryCard.css";
+
 function SummaryCard({ title, value }) {
 
     return (
 
         <div className="summary-card">
 
-            <h3>{title}</h3>
+            <p className="summary-title">
 
-            <h2>{value}</h2>
+                {title}
+
+            </p>
+
+            <h2 className="summary-value">
+
+                {value}
+
+            </h2>
 
         </div>
 

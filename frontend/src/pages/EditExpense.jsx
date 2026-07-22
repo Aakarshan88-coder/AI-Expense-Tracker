@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
-
 import {
     getExpenseById,
     updateExpense
 } from "../services/expense";
-
 import {
     useNavigate,
     useParams
 } from "react-router-dom";
+
+import "./AddExpense.css";
+import { toast } from "react-toastify";
 
 function EditExpense() {
 
@@ -29,12 +30,22 @@ function EditExpense() {
 
     const loadExpense = async () => {
 
-        const expense = await getExpenseById(id);
+        try {
 
-        setAmount(expense.amount);
-        setCategory(expense.category);
-        setDescription(expense.description);
-        setDate(expense.date);
+            const expense = await getExpenseById(id);
+
+            setAmount(expense.amount);
+            setCategory(expense.category);
+            setDescription(expense.description);
+            setDate(expense.date);
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+        }
 
     };
 
@@ -42,69 +53,89 @@ function EditExpense() {
 
         e.preventDefault();
 
-        await updateExpense(id, {
+        try {
 
-            amount: Number(amount),
-            category,
-            description,
-            date
+            await updateExpense(id, {
 
-        });
+                amount: Number(amount),
+                category,
+                description,
+                date
 
-        alert("Expense Updated Successfully");
+            });
 
-        navigate("/dashboard");
+            toast.success("Expense Updated Successfully");
+
+            navigate("/dashboard");
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+            alert("Failed to update expense");
+
+        }
 
     };
 
     return (
 
-        <div className="dashboard">
+        <div className="add-container">
 
-            <h1>Edit Expense</h1>
+            <div className="add-card">
 
-            <form onSubmit={handleSubmit}>
+                <h2>✏️ Edit Expense</h2>
 
-                <input
-                    type="number"
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                />
+                <p className="add-subtitle">
 
-                <br /><br />
+                    Update your expense details.
 
-                <input
-                    placeholder="Category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                />
+                </p>
 
-                <br /><br />
+                <form onSubmit={handleSubmit}>
 
-                <input
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
+                    <input
+                        type="number"
+                        placeholder="Enter Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        required
+                    />
 
-                <br /><br />
+                    <input
+                        type="text"
+                        placeholder="Category"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        required
+                    />
 
-                <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
+                    <input
+                        type="text"
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    />
 
-                <br /><br />
+                    <input
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        required
+                    />
 
-                <button type="submit">
+                    <button type="submit">
 
-                    Update Expense
+                        💾 Update Expense
 
-                </button>
+                    </button>
 
-            </form>
+                </form>
+
+            </div>
 
         </div>
 

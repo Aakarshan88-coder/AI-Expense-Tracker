@@ -1,14 +1,10 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { addExpense } from "../services/expense";
+import "./AddExpense.css";
+import { toast } from "react-toastify";
 
-import {
-    getExpenseById,
-    updateExpense
-} from "../services/expense";
-
-function EditExpense() {
-
-    const { id } = useParams();
+function AddExpense() {
 
     const navigate = useNavigate();
 
@@ -17,40 +13,13 @@ function EditExpense() {
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
 
-    useEffect(() => {
-
-        loadExpense();
-
-    }, []);
-
-    const loadExpense = async () => {
-
-        try {
-
-            const expense = await getExpenseById(id);
-
-            setAmount(expense.amount);
-            setCategory(expense.category);
-            setDescription(expense.description);
-            setDate(expense.date);
-
-        }
-
-        catch (error) {
-
-            console.log(error);
-
-        }
-
-    };
-
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
         try {
 
-            await updateExpense(id, {
+            await addExpense({
 
                 amount: Number(amount),
                 category,
@@ -59,7 +28,7 @@ function EditExpense() {
 
             });
 
-            alert("Expense Updated Successfully");
+            toast.success("Expense Added Successfully");
 
             navigate("/dashboard");
 
@@ -69,58 +38,68 @@ function EditExpense() {
 
             console.log(error);
 
+            alert("Failed to add expense");
+
         }
 
     };
 
     return (
 
-        <div className="dashboard">
+        <div className="add-container">
 
-            <h1>Edit Expense</h1>
+            <div className="add-card">
 
-            <form onSubmit={handleSubmit}>
+                <h2>💰 Add Expense</h2>
 
-                <input
-                    type="number"
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                />
+                <p className="add-subtitle">
 
-                <br /><br />
+                    Track your daily spending.
 
-                <input
-                    placeholder="Category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                />
+                </p>
 
-                <br /><br />
+                <form onSubmit={handleSubmit}>
 
-                <input
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
+                    <input
+                        type="number"
+                        placeholder="Enter Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        required
+                    />
 
-                <br /><br />
+                    <input
+                        type="text"
+                        placeholder="Category"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        required
+                    />
 
-                <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
+                    <input
+                        type="text"
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    />
 
-                <br /><br />
+                    <input
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        required
+                    />
 
-                <button type="submit">
+                    <button type="submit">
 
-                    Update Expense
+                        + Add Expense
 
-                </button>
+                    </button>
 
-            </form>
+                </form>
+
+            </div>
 
         </div>
 
@@ -128,4 +107,4 @@ function EditExpense() {
 
 }
 
-export default EditExpense;
+export default AddExpense;

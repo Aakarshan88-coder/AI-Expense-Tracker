@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/auth";
+import "./Login.css";
+import { toast } from "react-toastify";
 
 function Login() {
 
@@ -13,30 +15,20 @@ function Login() {
 
         try {
 
-            console.log("Email:", email);
-            console.log("Password:", password);
-
             const data = await loginUser(email, password);
-
-            console.log("Response:", data);
 
             localStorage.setItem(
                 "token",
                 data.access_token
             );
 
-            alert("Login Successful!");
+            toast.success("Login Successful");
 
             navigate("/dashboard");
 
         } catch (error) {
 
-            console.log("Full Error:", error);
-
-            if (error.response) {
-                console.log("Status:", error.response.status);
-                console.log("Data:", error.response.data);
-            }
+            console.log(error);
 
             alert("Invalid Credentials");
 
@@ -46,31 +38,47 @@ function Login() {
 
     return (
 
-        <div style={{ padding: "40px" }}>
+        <div className="login-container">
 
-            <h1>Login</h1>
+            <div className="login-card">
 
-            <input
-                type="email"
-                placeholder="Enter Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
+                <h2>🤖 AI Expense Tracker</h2>
 
-            <br /><br />
+                <p className="subtitle">
+                    Welcome Back
+                </p>
 
-            <input
-                type="password"
-                placeholder="Enter Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+                <input
+                    type="email"
+                    placeholder="Enter Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
 
-            <br /><br />
+                <input
+                    type="password"
+                    placeholder="Enter Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
 
-            <button onClick={handleLogin}>
-                Login
-            </button>
+                <button onClick={handleLogin}>
+                    Login
+                </button>
+
+                <p className="signup-text">
+
+                    Don't have an account?
+
+                    <Link to="/signup">
+
+                        Sign Up
+
+                    </Link>
+
+                </p>
+
+            </div>
 
         </div>
 

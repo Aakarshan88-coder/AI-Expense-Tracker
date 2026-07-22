@@ -21,22 +21,35 @@ def create_expense(db: Session, expense: ExpenseCreate, user_id: int):
     return new_expense
 
 
-def get_all_expenses(db: Session):
-
-    return db.query(Expense).all()
-
-
-def get_expense_by_id(db: Session, expense_id: int):
+def get_all_expenses(db: Session, user_id: int):
 
     return db.query(Expense).filter(
-        Expense.id == expense_id
+        Expense.user_id == user_id
+    ).all()
+
+
+def get_expense_by_id(
+    db: Session,
+    expense_id: int,
+    user_id: int
+):
+
+    return db.query(Expense).filter(
+        Expense.id == expense_id,
+        Expense.user_id == user_id
     ).first()
 
 
-def update_expense(db: Session, expense_id: int, expense: ExpenseCreate):
+def update_expense(
+    db: Session,
+    expense_id: int,
+    expense: ExpenseCreate,
+    user_id: int
+):
 
     existing_expense = db.query(Expense).filter(
-        Expense.id == expense_id
+        Expense.id == expense_id,
+        Expense.user_id == user_id
     ).first()
 
     if not existing_expense:
@@ -53,10 +66,15 @@ def update_expense(db: Session, expense_id: int, expense: ExpenseCreate):
     return existing_expense
 
 
-def delete_expense(db: Session, expense_id: int):
+def delete_expense(
+    db: Session,
+    expense_id: int,
+    user_id: int
+):
 
     existing_expense = db.query(Expense).filter(
-        Expense.id == expense_id
+        Expense.id == expense_id,
+        Expense.user_id == user_id
     ).first()
 
     if not existing_expense:

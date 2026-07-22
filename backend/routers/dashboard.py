@@ -7,20 +7,33 @@ from crud.dashboard import (
     get_category_summary
 )
 
+from routers.user import get_current_user
+
 router = APIRouter(
     prefix="/dashboard",
     tags=["Dashboard"]
 )
 
+
 @router.get("/summary")
 def dashboard_summary(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
 ):
-    return get_dashboard_summary(db)
+
+    return get_dashboard_summary(
+        db,
+        current_user.id
+    )
 
 
 @router.get("/category-summary")
 def category_summary(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
 ):
-    return get_category_summary(db)
+
+    return get_category_summary(
+        db,
+        current_user.id
+    )
