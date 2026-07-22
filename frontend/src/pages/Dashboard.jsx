@@ -9,6 +9,7 @@ import ExpenseTable from "../components/ExpenseTable";
 
 import { getDashboardSummary } from "../services/dashboard";
 import { getExpenses } from "../services/expense";
+import { getAIInsights } from "../services/ai";
 
 import "./Dashboard.css";
 
@@ -18,6 +19,9 @@ function Dashboard() {
 
     const [summary, setSummary] = useState(null);
     const [expenses, setExpenses] = useState([]);
+
+    const [aiInsights, setAIInsights] = useState("");
+    const [loadingAI, setLoadingAI] = useState(false);
 
     useEffect(() => {
 
@@ -53,6 +57,30 @@ function Dashboard() {
         } catch (error) {
 
             console.log(error);
+
+        }
+
+    };
+
+    const generateInsights = async () => {
+
+        try {
+
+            setLoadingAI(true);
+
+            const data = await getAIInsights();
+
+            setAIInsights(data.insights);
+
+        } catch (error) {
+
+            console.log(error);
+
+            alert("Failed to generate AI insights");
+
+        } finally {
+
+            setLoadingAI(false);
 
         }
 
@@ -121,6 +149,36 @@ function Dashboard() {
                     <MonthlyExpenseChart
                         expenses={expenses}
                     />
+
+                </div>
+
+                <div className="ai-section">
+
+                    <button
+                        className="ai-btn"
+                        onClick={generateInsights}
+                        disabled={loadingAI}
+                    >
+                        {loadingAI ? "Generating..." : "🤖 Generate AI Insights"}
+                    </button>
+
+                    {aiInsights && (
+
+                        <div className="ai-card">
+
+                            <h2>🤖 AI Financial Insights</h2>
+
+                            <p
+                                style={{
+                                    whiteSpace: "pre-line"
+                                }}
+                            >
+                                {aiInsights}
+                            </p>
+
+                        </div>
+
+                    )}
 
                 </div>
 

@@ -6,7 +6,7 @@ from routers.user import router as user_router
 from routers.expense import router as expense_router
 from models.expense import Expense
 from routers.dashboard import router as dashboard_router
-
+from routers.ai import router as ai_router
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
@@ -22,7 +22,7 @@ app.add_middleware(
 app.include_router(user_router, prefix="/user", tags=["User"])
 app.include_router(expense_router)
 app.include_router(dashboard_router)
-
+app.include_router(ai_router)
 @app.get("/")
 def home():
     return {
