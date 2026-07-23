@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { deleteExpense } from "../services/expense";
 import "./ExpenseTable.css";
 
-
 function ExpenseTable({ expenses }) {
 
     const navigate = useNavigate();
@@ -46,13 +45,9 @@ function ExpenseTable({ expenses }) {
                     <tr>
 
                         <th>Category</th>
-
                         <th>Amount</th>
-
                         <th>Description</th>
-
                         <th>Date</th>
-
                         <th>Action</th>
 
                     </tr>
@@ -66,11 +61,8 @@ function ExpenseTable({ expenses }) {
                         <tr key={expense.id}>
 
                             <td>{expense.category}</td>
-
                             <td>₹ {expense.amount}</td>
-
                             <td>{expense.description}</td>
-
                             <td>{expense.date}</td>
 
                             <td>
